@@ -19,6 +19,9 @@
     <Filter Include="소스 파일\Lecture\23">
       <UniqueIdentifier>{1530d35e-9432-4805-aa04-b9e625e82d07}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Src">
+      <UniqueIdentifier>{81e4c02a-ce0d-4531-a4f0-a34a04773310}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
@@ -28,9 +31,30 @@
     <ClCompile Include="MainApplication.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="VertexArray.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBuffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="IndexBuffer.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexArray.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBuffer.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferLayout.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="IndexBuffer.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>

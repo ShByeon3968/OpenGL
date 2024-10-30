@@ -1,7 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Shader.h"
-#include "stb-master/stb_image.h"
+#include "VertexArray.h"
+#include "VertexBufferLayout.h"
+#include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include <iostream>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -13,13 +16,14 @@ const unsigned int SCR_HEIGHT = 600;
 
 float vertices[] = {
     // positions         // colors
-     0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
-     0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+    -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bottom right
+     0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bottom left
+     0.5f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // top 
+    -0.5f,  0.5f, 0.0f,  1.0f, 0.0f, 1.0f   // top 
 };
 unsigned int indices[] = {
-    0,1,3,
-    1,2,3
+    0,1,2,
+    2,3,0
 };
 
 int main()
@@ -54,22 +58,15 @@ int main()
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
-    Shader shader("vertex.vert", "fragment.frag");
+    VertexBufferLayout vbl;
+    Shader shader{ "vertex.vert", "fragment.frag" };
+    VertexBuffer vb{ vertices, sizeof(vertices) };
+    vbl.Push<float>(3);
+    vbl.Push<float>(3);
 
-    unsigned int VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glBindVertexArray(VAO);
+    VertexArray va;
+    va.AddBuffer(vb, vbl);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Position Attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-    // Color Attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3*sizeof(float)));
-    glEnableVertexAttribArray(1);
 
 
     // render loop
@@ -87,7 +84,7 @@ int main()
 
         //render the triangle
         shader.Use();
-        glBindVertexArray(VAO);
+        va.Bind();
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
@@ -95,8 +92,7 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+ 
 
     // glfw: terminate, clearing all previously allocated GLFW resources.
     // ------------------------------------------------------------------
